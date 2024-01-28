@@ -1,0 +1,34 @@
+[
+  {
+    "model": "mainapp.category",
+    "pk": 1,
+    "fields": {
+      "category_name": "Бакалея",
+      "description": "Макароны, крупы, консервация, сахар, соль, специи, соусы, масло"
+    }
+  },
+  {
+    "model": "mainapp.category",
+    "pk": 2,
+    "fields": {
+      "category_name": "Молочные продукты",
+      "description": "Молоко, Сыр, Йогурты, Творог, Сметана, Кефир, Прочие молочные продукты"
+    }
+  },
+  {
+    "model": "mainapp.category",
+    "pk": 3,
+    "fields": {
+      "category_name": "Кондитерские изделия",
+      "description": "Шоколад, Печенье, Зефир и мармелад, Варенье и мед, Пряники и вафли, Восточные сладости"
+    }
+  },
+  {
+    "model": "mainapp.category",
+    "pk": 4,
+    "fields": {
+      "category_name": "Вода, Соки, Напитки",
+      "description": "Вода, Газировка, Соки, Энергетики, Морсы, Чай"
+    }
+  }
+]
