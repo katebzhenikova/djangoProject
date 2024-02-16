@@ -8,23 +8,18 @@
         {% for object in object_list %}
           <div class="col">
             <div class="card shadow-sm">
-              <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false;"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ object|title }}</text></svg>
+              <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ object|title }}</text></svg>
               <div class="card-body">
                 <p class="card-text">
-                  {{ object.description }}
+                  {{ object.description|slice:":100" }}
 
-                </p>
+                 </p>
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="openView()">Просмотр</button>
+                    <a href="{% url 'mainapp:products' %}" type="button" class="btn btn-sm btn-outline-secondary">Просмотр</a>
                   </div>
                 </div>
-                <script>
 
-                  function openView() {
-                    window.location.href = "{% url 'mainapp:products' %}";
-                  }
-                </script>
               </div>
             </div>
           </div>

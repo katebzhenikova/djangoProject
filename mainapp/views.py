@@ -1,43 +1,46 @@
 from django.shortcuts import render
+from django.views.generic import DetailView
 
 from mainapp.models import Category, Product
 
 
 def index(request):
-    category_id_ind = request.GET.get('category')
-    category_list = Category.objects.all()
     context = {
-        'object_list': category_list
+        'object_list': Category.objects.all(),
+        'title': 'SHOP online'
     }
     return render(request, 'main/index.html', context)
 
 
 def products(request):
-    category_id = request.GET.get('category')
-    product_list = Product.objects.all()
     context = {
-        'product_list': product_list,
-        'category_id': category_id
+        'product_list': Product.objects.all(),
+        'title': 'SHOP online - Products'
     }
     return render(request, 'main/products.html', context)
 
 
-# def products(request):
-#     category_id = request.GET.get('category')
-#     products = Product.objects.all()
-#     if category_id:
-#         products = products.filter(product_category_id=category_id)
-#     return render(request, 'products.html', {'products': products})
+def product_page(request, pk):
+    product_item = Product.objects.get(pk=pk)
+    context = {
+        'product_page': Product.objects.filter(product_category_id=pk),
+        'product': product_item,
+        'title': 'SHOP online - Products'
+
+    }
+    return render(request, 'main/product_page.html', context)
+
+
+# def products(request, pk):
+#     if pk == 0:
+#         product_item = Category.objects.all()
+#     else:
+#         product_item = Category.objects.get(pk=pk)
+#     context = {
+#         'object_list': Product.objects.filter(product_category_id=pk),
+#         'products': product_item
+#     }
+#     return render(request, 'main/products.html', context)
 
 
 
-
-
-
-# def index(request):
-#     if request.method == 'POST':
-#         name = request.POST.get('name')
-#         email = request.POST.get('email')
-#         message = request.POST.get('message')
-#         print(f'{name} ({email}): {message}')
-#     return render(request, 'main/index.html')

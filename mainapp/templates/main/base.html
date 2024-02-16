@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.118.2">
-    <title>Album example · Bootstrap v5.3</title>
+    <title>{{ title }}</title>
 
 
 
@@ -198,11 +198,11 @@
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
-        <h1 class="fw-light">SHOP online</h1>
+        <h1 class="fw-light">{{ title }}</h1>
         <p class="lead text-body-secondary">Покупки не выходя из дома</p>
         <p>
           <a href="{% url 'mainapp:index' %}" class="btn btn-primary my-2">Главная</a>
-          <a href="#" class="btn btn-secondary my-2">Служба Поддержки</a>
+          <a href="{% url 'mainapp:products' %}" class="btn btn-secondary my-2">Все продукты</a>
         </p>
       </div>
     </div>
