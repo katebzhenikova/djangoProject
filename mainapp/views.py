@@ -31,6 +31,7 @@ def product_page(request, pk):
     return render(request, 'main/product_page.html', context)
 
 
+
 # def products(request, pk):
 #     if pk == 0:
 #         product_item = Category.objects.all()

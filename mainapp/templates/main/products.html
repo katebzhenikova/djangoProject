@@ -1,31 +1,30 @@
 {% extends 'main/base.html' %}
-
+{% load my_tags %}
 {% block content %}
 
 
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         {% for product in product_list %}
-
-
           <div class="col">
             <div class="card shadow-sm">
-              <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false" style="background-color: white;">
-
-                <image xlink:href="{{ product.product_image.url }}" width="100%" height="100%" />
-              </svg>
+              {% if product.product_image %}
+                <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg"
+                     role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"
+                     style="background-color: white;"><image xlink:href="{{ product|get_image }}" width="100%" height="100%" /></svg>
+              {% else %}
+                <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg"
+                     role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"
+                     style="background-color: white;"><image xlink:href="{{ '/media/products/no_photo.png' }}" width="100%" height="100%" /></svg>
+              {% endif %}
               <div class="card-body">
                 <p class="card-text">
-                  {{ product|title }}
-                  <p>
-                  {% if product.is_active %}
-                    {{ object.description|slice:":100" }}
-                    <p>
-                    ЦЕНА: {{ product.product_price }} руб.
-                  {% else %}
-                  <span class="text-muted">{{ object|title }}</span>
-                  {% endif %}
-                   </p>
+                  <span class="fw-bold">{{ product|title }}</span>
+                <p>
+                  {{ product.description|slice:":100" }}
+                <p>
+                  ЦЕНА: {{ product.product_price }} руб.
+                </p>
                 <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                     <a href="{% url 'mainapp:product_page' product.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Просмотр</a>
