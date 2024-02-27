@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
 from pytils.translit import slugify
@@ -53,7 +53,7 @@ class BlogListView(ListView):
     template_name = 'main/blog_list.html'
     def get_queryset(self, *args, **kwargs):
         queryset = super().get_queryset(*args, **kwargs)
-        queryset = queryset.filter(blog_is_published=True)
+        # queryset = queryset.filter(blog_is_published=True)
         return queryset
 
 
@@ -94,7 +94,16 @@ class BlogDeleteView(DeleteView):
     template_name = 'main/blog_confirm_delete.html'
 
 
+def toggle_activity(request, pk):
+    blog_item = get_object_or_404(Blog, pk=pk)
+    if blog_item.blog_is_published:
+        blog_item.blog_is_published = False
+    else:
+        blog_item.blog_is_published = True
 
+    blog_item.save()
+
+    return redirect(reverse('mainapp:blog_list'))
 
 
 

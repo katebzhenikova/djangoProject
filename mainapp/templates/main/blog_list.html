@@ -20,6 +20,11 @@
 
                 </div>
                 </div>
+                {% if object.blog_is_published %}
+                <a class="btn btn-warning" href="{% url 'mainapp:toggle_activity' object.pk %}">Отмена публикации</a>
+                {% else %}
+                <a class="btn btn-success" href="{% url 'mainapp:toggle_activity' object.pk %}">Опубликовать</a>
+                {% endif %}
               </div>
             </div>
           </div>

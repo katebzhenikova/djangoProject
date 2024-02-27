@@ -1,7 +1,7 @@
 from django.urls import path
 from django.contrib import admin
 from mainapp.views import ProductListView, ProductDetailView, BlogCreateView, BlogListView, BlogDetailView, \
-    BlogUpdateView, BlogDeleteView
+    BlogUpdateView, BlogDeleteView, toggle_activity
 
 from mainapp.apps import MainappConfig
 
@@ -18,4 +18,6 @@ urlpatterns = [
     path('<int:pk>/blog_detail/', BlogDetailView.as_view(), name='blog_detail'),
     path('<int:pk>/blog_form/', BlogUpdateView.as_view(), name='blog_form'),
     path('<int:pk>/blog_confirm_delete/', BlogDeleteView.as_view(), name='blog_confirm_delete'),
+    path('<int:pk>/activity/', toggle_activity, name='toggle_activity'),
+
 ]
