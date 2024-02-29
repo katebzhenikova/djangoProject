@@ -1,13 +1,61 @@
+from django.db import transaction
+from django.forms import inlineformset_factory
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
 from pytils.translit import slugify
 
-from mainapp.models import Category, Product, Blog
+from mainapp.forms import ProductForm, VersionForm
+from mainapp.models import Category, Product, Blog, Version
+
+
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductForm
+    success_url = reverse_lazy('mainapp:products')
+    template_name = 'main/product_form.html'
+
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductForm
+    success_url = reverse_lazy('mainapp:products')
+    template_name = 'main/product_form.html'
+
+    def get_form_class(self):
+        return super().get_form_class()
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        FormSet = inlineformset_factory(self.model, Version, form=VersionForm, extra=1)
+        if self.request.method == 'POST':
+            formset = FormSet(self.request.POST, instance=self.object)
+        else:
+            formset = FormSet(instance=self.object)
+        context_data['formset'] = formset
+        return context_data
+
+    def form_valid(self, form):
+        context_data = self.get_context_data()
+        formset = context_data['formset']
+        with transaction.atomic():
+            if form.is_valid():
+                self.object = form.save()
+                if formset.is_valid():
+                    formset.instance = self.object
+                    formset.save()
+
+        return super().form_valid(form)
+
+
+
+
+
 
 class ProductListView(ListView):
     model = Product
-    template_name = 'main/products.html'
+    template_name = 'main/products_list.html'
+
 
 
 # def products(request):
@@ -15,22 +63,18 @@ class ProductListView(ListView):
 #         'product_list': Product.objects.all(),
 #         'title': 'SHOP online - Products'
 #     }
-#     return render(request, 'main/products.html', context)
+#     return render(request, 'main/products_list.html', context)
 
 class ProductDetailView(DetailView):
     model = Product
     template_name = 'main/product_page.html'
 
 
-# def product_page(request, pk):
-#     product_item = Product.objects.get(pk=pk)
-#     context = {
-#         'product_page': Product.objects.filter(product_category_id=pk),
-#         'product': product_item,
-#         'title': 'SHOP online - Products'
-#
-#     }
-#     return render(request, 'main/product_page.html', context)
+class ProductDeleteView(DeleteView):
+    model = Product
+    success_url = reverse_lazy('mainapp:products')
+    template_name = 'main/products_list.html'
+
 
 class BlogCreateView(CreateView):
     model = Blog
@@ -55,7 +99,6 @@ class BlogListView(ListView):
         queryset = super().get_queryset(*args, **kwargs)
         # queryset = queryset.filter(blog_is_published=True)
         return queryset
-
 
 
 class BlogDetailView(DetailView):
@@ -104,6 +147,7 @@ def toggle_activity(request, pk):
     blog_item.save()
 
     return redirect(reverse('mainapp:blog_list'))
+
 
 
 

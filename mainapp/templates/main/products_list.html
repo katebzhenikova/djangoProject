@@ -3,8 +3,10 @@
 {% block content %}
 
 
+      <div class="col-12 mb-5">
+        <a class="btn btn-outline-primary" href="{% url 'mainapp:product_form_create' %}">Добавить продукт</a>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         {% for product in product_list %}
           <div class="col">
             <div class="card shadow-sm">
@@ -23,17 +25,29 @@
                 <p>
                   {{ product.description|slice:":100" }}
                 <p>
+                <p>
+                  {% for version in product.version_set.all %}
+                        {% if version.vers_is_active %}
+                        Версия: {{ version.version_name }}
+                        {% endif %}
+                    {% endfor %}
+                <p>
+                <p>
                   ЦЕНА: {{ product.product_price }} руб.
-                </p>
+                <p>
+                  </p>
                 <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                     <a href="{% url 'mainapp:product_page' product.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Просмотр</a>
+                    <a href="{% url 'mainapp:product_form' product.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+                    <a href="{% url 'mainapp:product_confirm_delete' product.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Удалить</a>
                 </div>
                 </div>
               </div>
             </div>
           </div>
         {% endfor %}
+        </div>
       </div>
 
 
