@@ -35,12 +35,16 @@
                 <p>
                   ЦЕНА: {{ product.product_price }} руб.
                 <p>
+                <span class="text-muted">{{ product.product_user|default:"Без пользователя" }}</span>
                   </p>
                 <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                     <a href="{% url 'mainapp:product_page' product.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Просмотр</a>
                     <a href="{% url 'mainapp:product_form' product.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Редактировать</a>
-                    <a href="{% url 'mainapp:product_confirm_delete' product.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Удалить</a>
+                    <form method="post" action="{% url 'mainapp:product_confirm_delete' product.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-outline-secondary">Удалить</button>
+                    </form>
                 </div>
                 </div>
               </div>

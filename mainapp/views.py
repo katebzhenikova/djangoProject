@@ -15,6 +15,16 @@ class ProductCreateView(CreateView):
     success_url = reverse_lazy('mainapp:products')
     template_name = 'main/product_form.html'
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.object = None
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.product_user = self.request.user
+        self.object.save()
+        return super().form_valid(form)
+
 
 class ProductUpdateView(UpdateView):
     model = Product
@@ -48,22 +58,10 @@ class ProductUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-
-
-
-
 class ProductListView(ListView):
     model = Product
     template_name = 'main/products_list.html'
 
-
-
-# def products(request):
-#     context = {
-#         'product_list': Product.objects.all(),
-#         'title': 'SHOP online - Products'
-#     }
-#     return render(request, 'main/products_list.html', context)
 
 class ProductDetailView(DetailView):
     model = Product

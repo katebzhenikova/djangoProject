@@ -17,7 +17,7 @@ class ProductForm(forms.ModelForm, StyleFormMixin):
         model = Product
         fields = '__all__'
         # fields = ('product_name', 'description', 'product_price', 'product_image',)
-        # exclude = ('is_active', )
+        exclude = ('product_user', )
 
 
     def clean_product_name(self):

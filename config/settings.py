@@ -23,6 +23,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'mainapp',
+    'users',
     'mainapp.templatetags',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -132,7 +133,15 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.RemoteUserBackend',
 ]
 
+AUTH_USER_MODEL = 'users.User'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'katomyr@mail.ru'
+EMAIL_HOST_PASSWORD = 'zu5kT9zhewYC1qRNJiT3'
+EMAIL_USE_SSL = True
 
 
 

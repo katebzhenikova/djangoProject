@@ -1,5 +1,7 @@
 from django.db import models
 
+from config import settings
+
 NULLABLE = {'null': True, 'blank': True}
 
 
@@ -13,6 +15,7 @@ class Product(models.Model):
     product_last_modified = models.DateTimeField(verbose_name='дата последнего изменения')
 
     is_active = models.BooleanField(default=True, verbose_name='в наличии')
+    product_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name='пользователь')
 
     def __str__(self):
         return f'{self.product_name}'

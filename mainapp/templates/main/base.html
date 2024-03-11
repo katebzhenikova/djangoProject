@@ -174,6 +174,16 @@
           <ul class="list-unstyled">
             <li><a href="{% url 'mainapp:products' %}" class="text-white">Продукты</a></li>
             <li><a href="{% url 'mainapp:blog_list' %}" class="text-white">Создать блог</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'users:profile' %}" class="text-white">Профиль</a></li>
+            <form action="{% url 'users:logout' %}" method="post" class="text-white">
+              {% csrf_token %}
+              <button type="submit">Выйти</button>
+            </form>
+            {% else %}
+              <li><a href="{% url 'users:login' %}" class="text-white">Войти</a></li>
+              <li><a href="{% url 'users:register' %}" class="text-white">Регистрация</a></li>
+            {% endif %}
           </ul>
         </div>
       </div>
