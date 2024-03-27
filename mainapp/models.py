@@ -13,6 +13,7 @@ class Product(models.Model):
     product_price = models.IntegerField(verbose_name='цена за штуку')
     product_date = models.DateTimeField(verbose_name='дата создания')
     product_last_modified = models.DateTimeField(verbose_name='дата последнего изменения')
+    product_is_published = models.BooleanField(default=False, verbose_name='опубликован')
 
     is_active = models.BooleanField(default=True, verbose_name='в наличии')
     product_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name='пользователь')

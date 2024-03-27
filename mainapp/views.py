@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db import transaction
 from django.forms import inlineformset_factory
 from django.shortcuts import render, redirect, get_object_or_404
@@ -9,9 +11,10 @@ from mainapp.forms import ProductForm, VersionForm
 from mainapp.models import Category, Product, Blog, Version
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
+    # permission_required = 'mainapp.add_product'
     success_url = reverse_lazy('mainapp:products')
     template_name = 'main/product_form.html'
 
@@ -26,9 +29,11 @@ class ProductCreateView(CreateView):
         return super().form_valid(form)
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
+    #permission_required = 'mainapp.change_product'
+
     success_url = reverse_lazy('mainapp:products')
     template_name = 'main/product_form.html'
 
@@ -58,7 +63,7 @@ class ProductUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class ProductListView(ListView):
+class ProductListView(LoginRequiredMixin, ListView):
     model = Product
     template_name = 'main/products_list.html'
 
@@ -68,13 +73,18 @@ class ProductDetailView(DetailView):
     template_name = 'main/product_page.html'
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Product
-    success_url = reverse_lazy('mainapp:products')
-    template_name = 'main/products_list.html'
+    success_url = reverse_lazy('mainapp:products_list')
+    template_name = 'main/product_confirm_delete.html'
+    permission_required = 'mainapp.delete_product'
+
+    def test_func(self):
+        return self.request.user.is_superuser
 
 
-class BlogCreateView(CreateView):
+
+class BlogCreateView(LoginRequiredMixin, CreateView):
     model = Blog
     fields = ('blog_title', 'description', 'blog_image')
     success_url = reverse_lazy('mainapp:blog_list')
@@ -88,7 +98,7 @@ class BlogCreateView(CreateView):
         return super().form_valid(form)
 
 
-class BlogListView(ListView):
+class BlogListView(LoginRequiredMixin, ListView):
     model = Blog
     fields = ('blog_title', 'description', 'blog_image')
     success_url = reverse_lazy('mainapp:blog_list')
@@ -99,7 +109,7 @@ class BlogListView(ListView):
         return queryset
 
 
-class BlogDetailView(DetailView):
+class BlogDetailView(LoginRequiredMixin, DetailView):
     model = Blog
     fields = ('blog_title', 'description', 'blog_image')
     success_url = reverse_lazy('mainapp:blog_detail')
@@ -112,7 +122,7 @@ class BlogDetailView(DetailView):
         return self.object
 
 
-class BlogUpdateView(UpdateView):
+class BlogUpdateView(LoginRequiredMixin, UpdateView):
     model = Blog
     fields = ('blog_title', 'description', 'blog_image')
     template_name = 'main/blog_form.html'
@@ -134,6 +144,8 @@ class BlogDeleteView(DeleteView):
     success_url = reverse_lazy('mainapp:blog_list')
     template_name = 'main/blog_confirm_delete.html'
 
+
+@login_required
 
 def toggle_activity(request, pk):
     blog_item = get_object_or_404(Blog, pk=pk)

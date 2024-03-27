@@ -3,10 +3,9 @@
 {% block content %}
 
 
-      <div class="col-12 mb-5">
+<div class="col-12 mb-5" xmlns="http://www.w3.org/1999/html">
         <a class="btn btn-outline-primary" href="{% url 'mainapp:product_form_create' %}">Добавить продукт</a>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-
         {% for product in product_list %}
           <div class="col">
             <div class="card shadow-sm">
@@ -38,13 +37,15 @@
                 <span class="text-muted">{{ product.product_user|default:"Без пользователя" }}</span>
                   </p>
                 <div class="d-flex justify-content-between align-items-center">
+
                 <div class="btn-group">
                     <a href="{% url 'mainapp:product_page' product.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Просмотр</a>
+                    {% if product.product_user != users.user or user.is_superuser %}
                     <a href="{% url 'mainapp:product_form' product.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Редактировать</a>
-                    <form method="post" action="{% url 'mainapp:product_confirm_delete' product.pk %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-sm btn-outline-secondary">Удалить</button>
-                    </form>
+                    {% endif %}
+                    {% if user.is_superuser %}
+                    <a href="{% url 'mainapp:product_confirm_delete' product.pk %}" type="button" class="btn btn-sm btn-outline-danger">Удалить</a>
+                    {% endif %}
                 </div>
                 </div>
               </div>
@@ -53,6 +54,5 @@
         {% endfor %}
         </div>
       </div>
-
 
 {% endblock %}
